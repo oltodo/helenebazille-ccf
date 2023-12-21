@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-primary text-onPrimary;
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+html {
+  @apply bg-background text-onBackground text-xl;
 }

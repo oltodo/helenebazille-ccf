@@ -1,8 +1,24 @@
+import clsx from "clsx";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Source_Serif_4, Barlow_Condensed } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const sans = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-sans",
+});
+
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-serif",
+});
+
+const title = localFont({
+  src: "../assets/fonts/Pistilli-Roman.otf",
+  variable: "--font-title",
+});
 
 export const metadata: Metadata = {
   title: "Hélène Bazille - Conseil Conjugal et Familial",
@@ -16,8 +32,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html
+      lang="en"
+      className={process.env.MAINTENANCE && "bg-primary text-onPrimary"}
+    >
+      <body
+        className={clsx(
+          serif.className,
+          serif.variable,
+          sans.variable,
+          title.variable,
+        )}
+      >
+        {children}
+      </body>
     </html>
   );
 }
