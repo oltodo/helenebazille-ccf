@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Source_Serif_4, Barlow_Condensed } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import Script from "next/script";
 
 const sans = Barlow_Condensed({
   subsets: ["latin"],
@@ -46,6 +47,20 @@ export default function RootLayout({
       >
         {children}
       </body>
+
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-FMWF8V92J1"
+      ></Script>
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FMWF8V92J1');
+        `}
+      </Script>
     </html>
   );
 }
