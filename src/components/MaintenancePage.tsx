@@ -103,8 +103,8 @@ export default function MaintenancePage() {
         <motion.p variants={itemVariants}>
           Bonjour, je m’appelle Hélène Bazille, je suis conseillère conjugale et
           familiale. Je démarre mon activité à Mornant le 5 janvier 2024. Je
-          vous accueille le lundi et le vendredi pour des consultations de
-          conseil conjugal et familial, dans mon cabinet qui se situe au
+          vous accueille le lundi et le vendredi pour des consultations en
+          individuel, en couple ou en famille, dans mon cabinet qui se situe au
           centre-ville.
         </motion.p>
         <motion.p variants={itemVariants}>
