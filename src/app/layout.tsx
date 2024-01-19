@@ -5,6 +5,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Script from "next/script";
 
+import MaintenancePage from "@/components/MaintenancePage";
+
 const sans = Barlow_Condensed({
   subsets: ["latin"],
   weight: ["500"],
@@ -35,18 +37,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={process.env.MAINTENANCE && "bg-primary text-onPrimary"}
+      className={clsx(
+        process.env.MAINTENANCE === "1" && "bg-primary text-onPrimary",
+        serif.className,
+        serif.variable,
+        sans.variable,
+        title.variable,
+      )}
     >
-      <body
-        className={clsx(
-          serif.className,
-          serif.variable,
-          sans.variable,
-          title.variable,
-        )}
-      >
-        {children}
-      </body>
+      <body></body>
+      {process.env.MAINTENANCE === "1" ? <MaintenancePage /> : <>{children}</>}
 
       <Script
         async

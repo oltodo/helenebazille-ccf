@@ -8,11 +8,10 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import Image from "next/image";
 import { useRef } from "react";
 
-import brandImage from "@/assets/brand.svg";
-import logoImage from "@/assets/logo.svg";
+import BrandImage from "@/assets/images/brand.svg";
+import LogoImage from "@/assets/images/logo.svg";
 
 const hmin = 0.15; // %
 const hmax = 0.3; // %
@@ -87,13 +86,16 @@ export default function MaintenancePage() {
         className="flex-center fixed inset-x-0 top-0 z-20 h-0"
         style={{ y: titleY }}
       >
-        <motion.div variants={itemVariants} className="flex-center md:gap-8">
-          <Image alt="Logo" src={logoImage} className="max-sm:h-12"></Image>
-          <Image alt="Logo" src={brandImage} className="max-sm:h-10"></Image>
+        <motion.div
+          variants={itemVariants}
+          className="flex-center gap-4 md:gap-8"
+        >
+          <LogoImage className="h-12 fill-primaryContainer md:h-20" />
+          <BrandImage className="h-12 fill-onBackground max-sm:h-10" />
         </motion.div>
       </motion.div>
 
-      <div className="flex-center mx-auto h-full w-full max-w-2xl flex-1 flex-col gap-4 p-6 md:gap-8">
+      <div className="mx-auto flex h-full w-full max-w-2xl flex-1 flex-col gap-4 p-6 md:mt-8 md:gap-8">
         <motion.h1
           variants={itemVariants}
           className="font-title text-3xl md:text-4xl"
@@ -102,10 +104,9 @@ export default function MaintenancePage() {
         </motion.h1>
         <motion.p variants={itemVariants}>
           Bonjour, je m’appelle Hélène Bazille, je suis conseillère conjugale et
-          familiale. Je démarre mon activité à Mornant le 5 janvier 2024. Je
-          vous accueille le lundi et le vendredi pour des consultations en
-          individuel, en couple ou en famille, dans mon cabinet qui se situe au
-          centre-ville.
+          familiale à Mornant. Je vous accueille le lundi et le vendredi pour
+          des consultations en individuel, en couple ou en famille, dans mon
+          cabinet qui se situe au centre-ville ou en visioconférence.
         </motion.p>
         <motion.p variants={itemVariants}>
           Mon site internet est en cours de construction mais vous pouvez d’ores
@@ -122,6 +123,15 @@ export default function MaintenancePage() {
           </Chip>{" "}
           ou en ligne en cliquant sur le bouton ci-dessous.
         </motion.p>
+
+        <motion.div variants={itemVariants}>
+          <p className="mb-4 font-bold">Tarifs (par séance) :</p>
+          <ul className="list-inside list-disc">
+            <li>1 personne : 50€</li>
+            <li>2 personnes : 60€</li>
+            <li>3 personnes et + : 70€</li>
+          </ul>
+        </motion.div>
         <motion.div className="flex-center" variants={itemVariants}>
           <Button
             as="a"
