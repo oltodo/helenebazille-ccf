@@ -66,7 +66,7 @@ export default function MaintenancePage() {
     >
       <div className="flex-center pointer-events-none fixed inset-0 z-10 h-screen w-screen fill-background">
         <svg
-          className="h-full w-full min-w-[960px] fill-background"
+          className="size-full min-w-[960px] fill-background"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
           viewBox="0 0 960 960"
@@ -95,7 +95,7 @@ export default function MaintenancePage() {
         </motion.div>
       </motion.div>
 
-      <div className="mx-auto flex h-full w-full max-w-2xl flex-1 flex-col gap-4 p-6 md:mt-8 md:gap-8">
+      <div className="mx-auto flex size-full max-w-2xl flex-1 flex-col gap-4 p-6 md:mt-8 md:gap-8">
         <motion.h1
           variants={itemVariants}
           className="font-title text-3xl md:text-4xl"
