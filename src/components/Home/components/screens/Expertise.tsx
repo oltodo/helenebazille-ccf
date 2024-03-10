@@ -52,19 +52,28 @@ export const Expertise = forwardRef<HTMLDivElement>(function Expertise(_) {
         ref={ref}
       >
         <div className="h-0">
-          <h2 className="flex h-[100vh] flex-col justify-center px-6 font-title text-[15vh] leading-none text-terracotta md:px-20 portrait:text-[15vw]">
+          <motion.h2
+            initial="hidden"
+            whileInView="shown"
+            viewport={{ amount: 0.5, once: true }}
+            transition={{
+              staggerChildren: 0.1,
+            }}
+            className="flex h-[100vh] flex-col justify-center px-6 font-title text-[15vh] leading-none text-terracotta md:px-20 portrait:text-[15vw]"
+          >
             {["En quoi", "puis-je", "vous", "aider ?"].map((line, index) => (
               <motion.div
-                transition={{ delay: index * 0.05, type: "spring" }}
-                whileInView={{ opacity: 1 - index * 0.1, scale: 1 }}
-                viewport={{ amount: 0.5, once: true }}
-                initial={{ opacity: 0, scale: 0.9 }}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.9 },
+                  shown: { opacity: 1 - index * 0.1, scale: 1 },
+                }}
+                transition={{ type: "spring" }}
                 key={line}
               >
                 {line}
               </motion.div>
             ))}
-          </h2>
+          </motion.h2>
         </div>
 
         <div className="sticky top-0 h-[100vh] overflow-hidden">
