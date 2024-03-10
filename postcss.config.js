@@ -1,6 +1,7 @@
 module.exports = {
   plugins: {
-    tailwindcss: {},
+    "postcss-viewport-unit-fallback": {},
     autoprefixer: {},
+    tailwindcss: {},
   },
-}
+};

@@ -1,21 +1,16 @@
-import clsx from "clsx";
 import type { Metadata } from "next";
-import { Source_Serif_4, Barlow_Condensed } from "next/font/google";
+
+import { Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
-import "./globals.css";
 import Script from "next/script";
+import clsx from "clsx/lite";
 
-import MaintenancePage from "@/components/MaintenancePage";
+import "./globals.css";
 
-const sans = Barlow_Condensed({
-  subsets: ["latin"],
-  weight: ["500"],
-  variable: "--font-sans",
-});
-
-const serif = Source_Serif_4({
-  subsets: ["latin"],
+const serif = Playfair_Display({
   variable: "--font-serif",
+  weight: ["400", "600"],
+  subsets: ["latin"],
 });
 
 const title = localFont({
@@ -24,9 +19,9 @@ const title = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Hélène Bazille - Conseil Conjugal et Familial",
   description:
-    "Je m’appelle Hélène Bazille, je suis conseillère conjugale et familiale. Je démarre mon activité à Mornant le 5 janvier 2024. Je vous accueille le lundi et le vendredi pour des consultations de conseil conjugal et familial, dans mon cabinet qui se situe au centre-ville.",
+    "Je m’appelle Hélène Bazille, je suis conseillère conjugale et familiale. Je vous accueille le lundi et le vendredi, de 8h à 20h, pour des consultations de conseil conjugal et familial, dans mon cabinet qui se situe dans le centre de Mornant ou en téléconsultation.",
+  title: "Hélène Bazille - Conseil Conjugal et Familial",
 };
 
 export default function RootLayout({
@@ -36,22 +31,15 @@ export default function RootLayout({
 }) {
   return (
     <html
+      className={clsx(serif.className, serif.variable, title.variable)}
       lang="en"
-      className={clsx(
-        process.env.MAINTENANCE === "1" && "bg-primary text-onPrimary",
-        serif.className,
-        serif.variable,
-        sans.variable,
-        title.variable,
-      )}
     >
-      <body></body>
-      {process.env.MAINTENANCE === "1" ? <MaintenancePage /> : <>{children}</>}
+      <body>{children}</body>
 
       <Script
-        async
         src="https://www.googletagmanager.com/gtag/js?id=G-FMWF8V92J1"
-      ></Script>
+        async
+      />
       <Script id="google-analytics">
         {`
           window.dataLayer = window.dataLayer || [];

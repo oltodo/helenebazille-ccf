@@ -1,14 +1,47 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["import", "tailwindcss"],
+  "extends": [
+    "next/core-web-vitals"
+    // "plugin:perfectionist/recommended-line-length"
+  ],
+  "plugins": ["import", "tailwindcss", "unused-imports"],
   "rules": {
-    // import plugin rules
-    "import/order": [
+    "no-restricted-imports": [
       "error",
       {
-        "alphabetize": { "caseInsensitive": true, "order": "asc" },
-        "groups": ["builtin", "external", "internal", "parent", "sibling"],
-        "newlines-between": "always"
+        "paths": [
+          {
+            "name": "clsx",
+            "message": "Please use `clsx/lite` instead."
+          }
+        ]
+      }
+    ],
+
+    // import plugin rules
+    // "import/order": [
+    //   "error",
+    //   {
+    //     "alphabetize": { "caseInsensitive": true, "order": "asc" },
+    //     "groups": ["builtin", "external", "internal", "parent", "sibling"],
+    //     "newlines-between": "always"
+    //   }
+    // ],
+
+    "unused-imports/no-unused-vars": [
+      "off",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
       }
     ],
 

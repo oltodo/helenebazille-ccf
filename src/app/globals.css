@@ -2,10 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply bg-background text-onBackground font-serif;
+}
+dialog {
+  @apply text-onBackground font-serif;
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+input:focus {
+  @apply outline-sandDarkest;
+}
+
 .flex-center {
   @apply flex items-center justify-center;
 }
 
-html {
-  @apply bg-background text-onBackground text-xl;
+[data-text-xs] > * {
+  @apply max-xs:hidden;
+}
+[data-text-xs]:after {
+  content: attr(data-text-xs);
+  @apply xs:hidden;
+}
+[data-text-sm] > * {
+  @apply max-sm:hidden;
+}
+[data-text-sm]:after {
+  content: attr(data-text-sm);
+  @apply sm:hidden;
+}
+[data-text-md] > * {
+  @apply max-md:hidden;
+}
+[data-text-md]:after {
+  content: attr(data-text-md);
+  @apply md:hidden;
+}
+[data-text-lg] > * {
+  @apply max-lg:hidden;
+}
+[data-text-lg]:after {
+  content: attr(data-text-lg);
+  @apply lg:hidden;
 }
