@@ -15,7 +15,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
 
         <textarea
           className={clsx(
-            "ref:bg-sandDark ref:min-h-14 box-border w-full flex-1 rounded-2xl px-6 py-4 text-xl focus:outline-terracotta",
+            "ref:bg-sandDark ref:min-h-14 box-border w-full flex-1 rounded-2xl px-6 py-4 text-xl focus:outline-terracotta disabled:opacity-30",
             inputClassName,
           )}
           id="firstName"

@@ -1,51 +1,46 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput } from "@/components/TextInput";
 import { TextArea } from "@/components/TextArea";
 import { Button } from "@/components/Button";
 import { useForm } from "react-hook-form";
 import clsx from "clsx/lite";
-import { z } from "zod";
 
+import { useFormState, useFormStatus } from "react-dom";
+import { FormState, formSchema } from "./config";
+import { FormValues } from "./config";
 import { sendMessage } from "./actions";
 
-export const formSchema = z.object({
-  phone: z
-    .string()
-    .regex(/^\d{10}$/, "Le numéro doit être composé de 10 chiffres")
-    .optional()
-    .or(z.literal("")),
-  email: z.string().email("L’adresse email n’est pas valide").min(1),
-  message: z.string().min(1),
-  name: z.string().min(1),
-});
+const initialState = {
+  message: "",
+};
 
-type FormValues = z.infer<typeof formSchema>;
+type Props = {
+  state: FormState;
+};
 
-export function ContactForm() {
+export function ContactForm({ state }: Props) {
   const {
     formState: { isValid, errors },
-    // handleSubmit,
     register,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
-  console.log(errors);
+  const { pending } = useFormStatus();
+
+  const disabled = pending || state.message === "sent";
 
   return (
-    <form
-      // onSubmit={handleSubmit(() => {
-      //   console.log("ok");
-      // })}
-      className="flex flex-col gap-8"
-      action={sendMessage}
-    >
+    <div className="relative flex flex-col gap-8">
       <div className="flex flex-col gap-8 md:flex-row lg:flex-col xl:flex-row">
         <div className="flex flex-1 flex-col gap-6">
           <TextInput
             {...register("name")}
             inputClassName={clsx("bg-sand")}
             label="Votre nom *"
+            disabled={disabled}
           />
           <TextInput
             {...register("email")}
@@ -53,12 +48,14 @@ export function ContactForm() {
             label="Votre email *"
             inputMode="email"
             type="email"
+            disabled={disabled}
           />
           <TextInput
             {...register("phone")}
             inputClassName={clsx("bg-sand")}
             label="Votre téléphone"
             inputMode="tel"
+            disabled={disabled}
           />
         </div>
         <TextArea
@@ -66,9 +63,16 @@ export function ContactForm() {
           inputClassName={clsx("min-h-72 bg-sand")}
           label="Votre message *"
           className="flex flex-1"
+          disabled={disabled}
         />
       </div>
-      <Button disabled={!isValid}>Envoyer</Button>
-    </form>
+      <Button disabled={!isValid || disabled}>Envoyer</Button>
+
+      {state.message === "sent" && (
+        <div className="absolute inset-0 flex items-center justify-center bg-sand text-xl font-semibold opacity-80 md:text-2xl">
+          Votre message à bien été envoyé.
+        </div>
+      )}
+    </div>
   );
 }

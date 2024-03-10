@@ -8,6 +8,9 @@ import BrandImage from "@/assets/images/brand.svg";
 import LogoImage from "@/assets/images/logo.svg";
 
 import { ContactForm } from "./ContactForm";
+import { sendMessage } from "./actions";
+import { useFormState } from "react-dom";
+import { initialFormState } from "./config";
 
 type Props = {
   children: ReactNode;
@@ -24,6 +27,8 @@ export function Menu({ children, open }: Props) {
       dialogRef.current?.close();
     }
   }, [open]);
+
+  const [state, formAction] = useFormState(sendMessage, initialFormState);
 
   return (
     <dialog
@@ -78,7 +83,9 @@ export function Menu({ children, open }: Props) {
                 <h2 className="font-title text-3xl md:text-4xl">
                   Contactez-moi
                 </h2>
-                <ContactForm />
+                <form action={formAction}>
+                  <ContactForm state={state} />
+                </form>
               </div>
             </div>
           </div>

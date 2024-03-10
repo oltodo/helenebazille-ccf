@@ -17,7 +17,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
 
       <input
         className={clsx(
-          "ref:bg-sandDark h-14 w-full rounded-2xl px-6 text-xl focus:outline-terracotta",
+          "ref:bg-sandDark h-14 w-full rounded-2xl px-6 text-xl focus:outline-terracotta disabled:opacity-30",
           inputClassName,
         )}
         id="firstName"
