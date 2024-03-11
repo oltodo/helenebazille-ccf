@@ -1,13 +1,13 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { FormValues, FormState } from "./config";
 import { formSchema } from "./config";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   host: "ssl0.ovh.net",
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
@@ -23,28 +23,39 @@ export async function sendMessage(
   try {
     formSchema.parse(data);
 
-    transporter.sendMail({
+    const body = [
+      ["Nom", data.name],
+      ["Adresse email", data.email],
+    ];
+
+    if (data.phone) {
+      body.push(["Téléphone", data.phone]);
+    }
+
+    body.push(["Message", data.message]);
+
+    await transporter.sendMail({
       subject: `Nouveau message reçu depuis le formulaire de contact`,
       to: process.env.SMTP_USER,
-      from: {
+      from: process.env.SMTP_USER || "",
+      replyTo: {
         name: data.name,
         address: data.email,
       },
-      text: `
-    Nom : ${data.name}
-
-    Adresse email : ${data.email}
-
-    ${data.phone ? `Téléphone : ${data.phone}` : ""}
-
-    Message :
-
-    ${data.message}
-        `.trim(),
+      html: body
+        .map(
+          (part) =>
+            `<b>${part[0]} :</b><br/><br/>${part[1].replace(/\n/g, "<br />")}`,
+        )
+        .join("<br/><br/>"),
     });
   } catch (e) {
-    console.log(e);
+    console.log("message not sent", data);
+
+    return { status: "error" };
   }
 
-  return { message: "sent" };
+  console.log("message sent", data);
+
+  return { status: "sent" };
 }

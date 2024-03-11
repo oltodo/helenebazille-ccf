@@ -30,7 +30,7 @@ export function ContactForm({ state }: Props) {
 
   const { pending } = useFormStatus();
 
-  const disabled = pending || state.message === "sent";
+  const disabled = pending || state.status === "sent";
 
   return (
     <div className="relative flex flex-col gap-8">
@@ -68,7 +68,11 @@ export function ContactForm({ state }: Props) {
       </div>
       <Button disabled={!isValid || disabled}>Envoyer</Button>
 
-      {state.message === "sent" && (
+      {state.status === "error" && (
+        <div>Un problème est survenu, veillez réessayer ultérieurement</div>
+      )}
+
+      {state.status === "sent" && (
         <div className="absolute inset-0 flex items-center justify-center bg-sand text-xl font-semibold opacity-80 md:text-2xl">
           Votre message à bien été envoyé.
         </div>
