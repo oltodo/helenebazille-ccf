@@ -14,9 +14,9 @@ export const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 export type FormState = {
-  message: "sent" | null;
+  status: "sent" | "error" | null;
 };
 
 export const initialFormState: FormState = {
-  message: null,
+  status: null,
 };
