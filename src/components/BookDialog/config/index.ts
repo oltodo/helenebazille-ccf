@@ -1,18 +1,21 @@
 export const eventTypes = [
   {
     label: "Individuel",
+    sessionLabel: "Séance individuelle",
     duration: 50,
     id: "solo",
     price: 50,
   },
   {
     label: "En couple",
+    sessionLabel: "Séance en couple",
     duration: 50,
     id: "duo",
     price: 60,
   },
   {
     label: "En famille",
+    sessionLabel: "Séance en famille",
     duration: 90,
     id: "tribe",
     price: 70,

@@ -18,15 +18,18 @@ import { ContactStep } from "./components/steps/ContactStep";
 import { ThanksStep } from "./components/steps/ThanksStep";
 import { SlotStep } from "./components/steps/SlotStep";
 import { Button } from "../Button";
+import { eventTypes, locations } from "./config";
 
 const steps: Step[] = ["type", "location", "contact", "slot", "thanks"];
 
 type Props = {
+  open: boolean;
   forceSessionType?: SessionType;
+  onClose: () => void;
 };
 
 export const BookDialog = forwardRef<HTMLDialogElement, Props>(
-  function BookDialog({ forceSessionType }, ref) {
+  function BookDialog({ open, onClose, forceSessionType }, ref) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const [step, setStep] = useState<Step>(
       forceSessionType ? "location" : "type",
@@ -34,8 +37,6 @@ export const BookDialog = forwardRef<HTMLDialogElement, Props>(
     const [direction, setDirection] = useState<"backward" | "forward">(
       "forward",
     );
-
-    useImperativeHandle(ref, () => dialogRef.current!, []);
 
     const form = useForm<FormValues>({
       defaultValues: {
@@ -48,8 +49,17 @@ export const BookDialog = forwardRef<HTMLDialogElement, Props>(
       formState: { isValid },
       handleSubmit,
       setValue,
+      getValues,
       control,
     } = form;
+
+    useEffect(() => {
+      if (open) {
+        dialogRef.current?.showModal();
+      } else {
+        dialogRef.current?.close();
+      }
+    }, [open]);
 
     useEffect(() => {
       if (forceSessionType && step === "type") {
@@ -59,27 +69,36 @@ export const BookDialog = forwardRef<HTMLDialogElement, Props>(
     }, [forceSessionType, setValue, step]);
 
     const nextStep = () => {
-      setDirection("forward");
       const index = steps.indexOf(step);
 
       if (index < steps.length) {
+        setDirection("forward");
         setStep(steps[index + 1]);
       }
     };
 
     const previousStep = () => {
-      setDirection("backward");
       const index = steps.indexOf(step);
 
+      if (index === 1 && forceSessionType) {
+        return;
+      }
+
       if (index > 0) {
+        setDirection("backward");
         setStep(steps[index - 1]);
       }
     };
 
     const close = () => {
-      dialogRef.current?.close();
+      onClose();
       setStep("type");
     };
+
+    const { sessionType, location } = getValues();
+
+    const sessionTypeData = eventTypes.find((item) => item.id === sessionType);
+    const locationData = locations.find((item) => item.id === location);
 
     return (
       <dialog
@@ -103,7 +122,17 @@ export const BookDialog = forwardRef<HTMLDialogElement, Props>(
         >
           <div className="mx-auto flex min-h-full max-w-[1024px] flex-col opacity-0 transition-opacity delay-0 group-open/dialog:opacity-100 group-open/dialog:delay-500">
             <h2 className="sticky top-0 z-10 w-full border-b bg-sand p-4 pt-6 text-center font-title text-xl text-terracotta sm:text-3xl">
-              <span className="mx-auto">Prendre rendez-vous</span>
+              <div className="mx-auto">
+                {step === "type"
+                  ? "Prendre rendez-vous"
+                  : sessionTypeData?.sessionLabel}
+              </div>
+
+              {step !== "type" && step !== "location" && locationData && (
+                <div className="font-serif text-xl md:text-2xl">
+                  {locationData.label}
+                </div>
+              )}
 
               <div className="absolute inset-y-0 right-4 flex justify-center">
                 <button
@@ -189,7 +218,9 @@ export const BookDialog = forwardRef<HTMLDialogElement, Props>(
               </AnimatePresence>
             </div>
 
-            {step !== "type" && step !== "thanks" && (
+            {((step === "location" && !forceSessionType) ||
+              step === "contact" ||
+              step === "slot") && (
               <div className="sticky bottom-0 flex min-h-20 items-center justify-between border-t bg-sand px-6">
                 <button
                   onClick={() => {

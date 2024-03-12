@@ -24,8 +24,8 @@ export default function Home() {
 
   const [defaultSessionType, setDefaultSessionType] = useState<SessionType>();
   const [menuOpened, setMenuOpened] = useState(false);
+  const [bookingOpened, setBookingOpened] = useState(false);
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const ccfRef = useRef<HTMLDivElement>(null);
   const aboutMeRef = useRef<HTMLDivElement>(null);
   const bookNowRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,9 @@ export default function Home() {
   const bookNowInView = useInView(bookNowRef, { amount: 0.2 });
 
   return (
-    <appContext.Provider value={{ menuOpened, setMenuOpened }}>
+    <appContext.Provider
+      value={{ menuOpened, setMenuOpened, bookingOpened, setBookingOpened }}
+    >
       <main
         className={clsx(
           "mb-[20vh] min-h-[100vh] w-[100vw] transition-colors duration-200",
@@ -46,7 +48,7 @@ export default function Home() {
         <Header
           onClickBook={() => {
             setDefaultSessionType(undefined);
-            dialogRef.current?.showModal();
+            setBookingOpened(true);
           }}
           mode={
             (aboutMeInView && !ccfInView) || bookNowInView ? "light" : "dark"
@@ -63,13 +65,20 @@ export default function Home() {
         <BookNow
           onSelectSessionType={(sessionType) => {
             setDefaultSessionType(sessionType);
-            dialogRef.current?.showModal();
+            setBookingOpened(true);
           }}
           inView={bookNowInView}
           ref={bookNowRef}
         />
 
-        <BookDialog forceSessionType={defaultSessionType} ref={dialogRef} />
+        <BookDialog
+          open={bookingOpened}
+          forceSessionType={defaultSessionType}
+          onClose={() => {
+            setDefaultSessionType(undefined);
+            setBookingOpened(false);
+          }}
+        />
       </main>
     </appContext.Provider>
   );
